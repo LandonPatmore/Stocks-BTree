@@ -56,6 +56,7 @@ public class DataPuller {
 
                 b.insert(key, info);
             }
+            b.cache();
 
             return c;
         } catch (UnirestException e) {
