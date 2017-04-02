@@ -1,12 +1,13 @@
 package csc365hw2;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * Created by landon on 3/23/17.
  */
 
-public class BTree {
+public class BTree implements Serializable{
 
     private Node root;
     private int minDegree;
@@ -20,21 +21,21 @@ public class BTree {
         return root;
     }
 
-    public void insert(String k, Double[] v){
+    public void insert(Integer k, Double[] v){
         if(root == null){
             root = new Node(true);
-            root.insert(new Data(k, v));
+            root.insertData(new Data(k, v));
         } else {
             if(root.isFull()){
-                Node r = root;
                 Node s = new Node(false);
+                s.getChildren()[0] = root;
                 root = s;
-                s.getChildren()[0] = r;
                 split(s,0);
                 insertNonFull(s, new Data(k,v));
 
+            } else {
+                insertNonFull(root, new Data(k, v));
             }
-            insertNonFull(root, new Data(k,v));
         }
     }
 
@@ -42,7 +43,7 @@ public class BTree {
         int i = x.getKeys() - 1;
 
         if(x.isLeaf()){
-            x.insert(d);
+            x.insertData(d);
         } else{
             while(i >= 1 && d.getKey().compareTo(x.getData()[i].getKey()) < 0){
                 i -= 1;
@@ -59,42 +60,35 @@ public class BTree {
         }
     }
 
-    public void split(Node x, int i){
-        Node y = x.children[i];
-        Node z = new Node(y.isLeaf());
-        int median = z.medianKey();
+    public void split(Node parent, int i){
+        Node left = parent.children[i];
+        Node right = new Node(left.isLeaf());
+        int median = left.medianKey();
 
-        z.setLeaf(y.isLeaf());
-        z.setKeys(median);
+        parent.insertData(left.getData()[median]);
 
-        for(int j = 0; j < median; j++){
-            z.getData()[j] = y.getData()[j + median];
+        for(int j = 1; j <= median; j++){
+            right.insertData(left.getData()[j + median]);
         }
 
-        if(!y.isLeaf()){
-            for(int j = 0; j < median; j++){
-                z.getChildren()[j] = y.getChildren()[j + median];
+        for(int j = left.getKeys() - 1; j >= median; j--){
+            left.removeData(j);
+        }
+
+        if(!left.isLeaf()){
+            for(int j = median; j < left.getChildren().length - 1; j++){
+                right.getChildren()[j - 1] = left.getChildren()[j+median];
+                left.getChildren()[j+median] = null;
             }
         }
 
-        y.setKeys(median);
-
-        for(int j = x.getKeys() + 1; j > i + 1; j--){
-            x.getChildren()[j + 1] = x.getChildren()[j];
-        }
-        x.getChildren()[i + 1] = z;
-
-        for(int j = x.getKeys(); j > i; j--){
-            x.getData()[j + 1] = x.getData()[j];
-        }
-        x.getData()[i] = y.getData()[i];
-        x.setKeys(x.getKeys() + 1);
+        parent.getChildren()[i + 1] = right;
     }
 
-    public String search(Node n, String k){
+    public Integer search(Node n, Integer k){
         int i = 0;
 
-        while (i <= n.getKeys() && k.compareTo(n.data[i].getKey()) > 0){
+        while (i <= n.getKeys() && k > n.data[i].getKey()){
             i += 1;
         }
         if(i <= n.getKeys() && k.equals(n.data[i].getKey())){
@@ -115,15 +109,15 @@ public class BTree {
     }
 
     public class Data implements Comparable<Data>{
-        private String key;
+        private Integer key;
         private Double[] values;
 
-        private Data(String k, Double[] v){
+        private Data(Integer k, Double[] v){
             key = k;
             values = v;
         }
 
-        public String getKey() {
+        public Integer getKey() {
             return key;
         }
 
@@ -139,7 +133,7 @@ public class BTree {
     public class Node {
         private Data[] data;
         private Node[] children;
-        private int keys;
+        private Integer keys;
         private boolean isLeaf;
 
         private Node(boolean leaf){
@@ -165,22 +159,19 @@ public class BTree {
             return isLeaf;
         }
 
-        private void setLeaf(boolean leaf) {
-            isLeaf = leaf;
-        }
-
-        private void setKeys(int keys) {
-            this.keys = keys;
-        }
-
         public int getKeys() {
             return keys;
         }
 
-        private void insert(Data d){
+        private void insertData(Data d){
             data[keys] = d;
             keys++;
             sortData();
+        }
+
+        private void removeData(int i){
+            data[i] = null;
+            keys--;
         }
 
         public int medianKey(){
