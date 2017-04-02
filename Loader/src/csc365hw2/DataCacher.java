@@ -8,43 +8,43 @@ import java.util.*;
  */
 
 
-public class Cacher{
-    private HashMap<String, String> map;
+public class DataCacher {
+    private HashMap<String, String> map = new HashMap<>();
 
-    public Cacher(){
-        map = new HashMap<>();
+    public DataCacher(){
     }
 
     public void add(String url, String response){
         map.put(url, response);
     }
 
-    public void cache(){
+    public void cacheData(){
         try {
-            ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("cache.ser"));
+            ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("data.ser"));
             o.writeObject(map);
             o.close();
-            System.out.println("Serialized");
+            System.out.println("Data Serialized");
         } catch (IOException e){
             System.out.println("Error");
             e.printStackTrace();
         }
     }
 
-    public String retrieve(){
+    public String retrieveData(){
         HashMap<String, String> des;
 
         try{
-            ObjectInputStream o = new ObjectInputStream(new FileInputStream("cache.ser"));
+            ObjectInputStream o = new ObjectInputStream(new FileInputStream("data.ser"));
             //get checked
             des = (HashMap<String, String>) o.readObject();
             o.close();
 
-
+            System.out.println("Data Deserialized");
             Map.Entry<String, String> entry = des.entrySet().iterator().next();
 
             return entry.getValue();
         } catch (IOException | ClassNotFoundException e){
+            System.out.println("Error");
             e.printStackTrace();
         }
         return null;

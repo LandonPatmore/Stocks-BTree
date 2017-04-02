@@ -16,26 +16,17 @@ public class Main extends Application {
 //        primaryStage.setResizable(false);
 //        primaryStage.show();
 
-        BTree b = new BTree(4);
-        b.insert(1, new Double[]{50.0, 60.0, 70.0});
-        b.insert(2, new Double[]{50.0, 60.0, 70.0});
-        b.insert(3, new Double[]{50.0, 60.0, 70.0});
-        b.insert(4, new Double[]{50.0, 60.0, 70.0});
-        b.insert(5, new Double[]{50.0, 60.0, 70.0});
-        b.insert(6, new Double[]{50.0, 60.0, 70.0});
-        b.insert(7, new Double[]{50.0, 60.0, 70.0});
-        b.insert(8, new Double[]{50.0, 60.0, 70.0});
-        b.insert(9, new Double[]{50.0, 60.0, 70.0});
-        b.insert(10, new Double[]{50.0, 60.0, 70.0});
-        b.insert(11, new Double[]{50.0, 60.0, 70.0});
-        b.insert(12, new Double[]{50.0, 60.0, 70.0});
-        b.insert(13, new Double[]{50.0, 60.0, 70.0});
-        b.insert(14, new Double[]{50.0, 60.0, 70.0});
-        b.insert(15, new Double[]{50.0, 60.0, 70.0});
-        b.insert(16, new Double[]{50.0, 60.0, 70.0});
-        b.insert(17, new Double[]{50.0, 60.0, 70.0});
-        b.insert(18, new Double[]{50.0, 60.0, 70.0});
-        b.showRoot();
+//        BTree b = new BTree();
+//        b.insert("Lanodn", new Double[]{50.0});
+//        b.insert("Apples", new Double[]{50.0});
+//        b.insert("Daniel", new Double[]{50.0});
+//        b.cache();
+//        BTree c;
+//        c = b.retrieve();
+//        c.showRoot();
+
+        DataPuller d = new DataPuller();
+        d.getStockData();
 
 
 
