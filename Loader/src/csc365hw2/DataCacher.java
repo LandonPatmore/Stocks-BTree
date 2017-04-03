@@ -31,16 +31,13 @@ public class DataCacher {
     }
 
     public String retrieveData(){
-        HashMap<String, String> des;
-
         try{
             ObjectInputStream o = new ObjectInputStream(new FileInputStream("data.ser"));
-            //get checked
-            des = (HashMap<String, String>) o.readObject();
+            HashMap<String, String> h = (HashMap<String, String>) o.readObject();
             o.close();
 
             System.out.println("Data Deserialized");
-            Map.Entry<String, String> entry = des.entrySet().iterator().next();
+            Map.Entry<String, String> entry = h.entrySet().iterator().next();
 
             return entry.getValue();
         } catch (IOException | ClassNotFoundException e){
@@ -49,6 +46,35 @@ public class DataCacher {
         }
         return null;
     }
+
+    public void cacheBtree(BTree b){
+        try {
+            ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("Btree.ser"));
+            o.writeObject(b);
+            o.close();
+            System.out.println("Btree Serialized");
+        } catch (IOException e){
+            System.out.println("Btree Error");
+            e.printStackTrace();
+        }
+    }
+
+    public BTree retrieveBtree(){
+        try{
+            ObjectInputStream o = new ObjectInputStream(new FileInputStream("Btree.ser"));
+            BTree b = (BTree) o.readObject();
+            o.close();
+
+            System.out.println("Btree Deserialized");
+            return b;
+        } catch (IOException | ClassNotFoundException e){
+            System.out.println("Error");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 
 
 

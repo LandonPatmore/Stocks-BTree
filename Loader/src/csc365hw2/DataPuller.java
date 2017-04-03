@@ -42,9 +42,10 @@ public class DataPuller {
                     .header("Accept", "application/json")
                     .asJson();
 
+            c.add(URL + KEY, jsonResponse.getBody().toString());
+
             JSONArray data = jsonResponse.getBody().getObject().getJSONObject("datatable").getJSONArray("data");
 
-            c.add(URL + KEY,data.toString());
             c.cacheData();
 
             for (int i = 0; i < data.length(); i++) {
@@ -56,7 +57,7 @@ public class DataPuller {
 
                 b.insert(key, info);
             }
-            b.cache();
+            c.cacheBtree(b);
 
             return c;
         } catch (UnirestException e) {

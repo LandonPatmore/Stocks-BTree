@@ -1,5 +1,8 @@
 package csc365hw2;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.*;
 import java.util.Arrays;
 
@@ -19,6 +22,23 @@ public class BTree implements Serializable {
 
     public Node getRoot() {
         return root;
+    }
+
+    public void insertCacheData(String cache){
+        JSONObject obj = new JSONObject(cache);
+
+        JSONArray cacheData = obj.getJSONObject("datatable").getJSONArray("data");
+
+        for (int i = 0; i < cacheData.length(); i++) {
+            String key;
+            key = cacheData.getJSONArray(i).get(0) + " " + cacheData.getJSONArray(i).get(1);
+            Double[] info = new Double[5];
+            for (int j = 2; j <= 6; j++) {
+                info[j - 2] = cacheData.getJSONArray(i).getDouble(j);
+            }
+
+            insert(key, info);
+        }
     }
 
     public void insert(String k, Double[] v) {

@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class Main extends Application {
 
     @Override
@@ -25,8 +27,19 @@ public class Main extends Application {
 //        c = b.retrieve();
 //        c.showRoot();
 
-        DataPuller d = new DataPuller();
-        d.getStockData();
+        DataCacher c = new DataCacher();
+        File checkData = new File("data.ser");
+        BTree b = new BTree();
+        if(checkData.exists()){
+            System.out.println("Cache exists.");
+            b.insertCacheData(c.retrieveData());
+            System.out.println("done");
+            b.showRoot();
+        } else {
+            System.out.println("Cache does not exist...pulling from internet");
+            DataPuller d = new DataPuller();
+            d.getStockData();
+        }
 
 
 
