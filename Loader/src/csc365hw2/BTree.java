@@ -115,7 +115,7 @@ public class BTree implements Serializable {
             i += 1;
         }
         if (i < n.getKeys() && k.compareTo(n.data[i].getKey()) == 0) {
-            return n.data[i].getKey();
+            return Arrays.toString(n.data[i].getValues());
         } else if (n.isLeaf()) {
             return null;
         } else {
@@ -129,37 +129,6 @@ public class BTree implements Serializable {
                 System.out.println(d.getKey());
             }
         }
-    }
-
-    public void cache() {
-        try {
-            ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("Btree.ser"));
-            o.writeObject(this);
-            o.close();
-            System.out.println("Btree Serialized");
-        } catch (IOException e) {
-            System.out.println("Error");
-            e.printStackTrace();
-        }
-    }
-
-    public BTree retrieve() {
-        BTree b;
-
-        try {
-            ObjectInputStream o = new ObjectInputStream(new FileInputStream("Btree.ser"));
-            //get checked
-            b = (BTree) o.readObject();
-            o.close();
-
-            System.out.println("Data Deserialized");
-
-            return b;
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error");
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public class Data implements Comparable<Data>, Serializable {
