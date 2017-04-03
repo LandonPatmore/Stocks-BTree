@@ -41,6 +41,20 @@ public class BTree implements Serializable {
         }
     }
 
+    public void traverse(Node p){
+        int i;
+        for(i = 0; i < p.getKeys(); i++){
+            if(!p.isLeaf()){
+                traverse(p.getChildren()[i]);
+            }
+            System.out.println(p.getData()[i].getKey());
+        }
+
+        if(!p.isLeaf()){
+            traverse(p.getChildren()[i]);
+        }
+    }
+
     public void insert(String k, Double[] v) {
         if (root == null) {
             root = new Node(true);

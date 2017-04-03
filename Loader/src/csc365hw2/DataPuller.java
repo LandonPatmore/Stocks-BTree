@@ -35,7 +35,7 @@ public class DataPuller {
      * @throws UnirestException in the case that Unirest can't reach the server for any reason so the app does not crash
      */
 
-    public DataCacher getStockData() throws UnirestException {
+    public BTree getStockData() throws UnirestException {
         HttpResponse<JsonNode> jsonResponse;
         try {
             jsonResponse = Unirest.get(URL + KEY)
@@ -59,7 +59,7 @@ public class DataPuller {
             }
             c.cacheBtree(b);
 
-            return c;
+            return b;
         } catch (UnirestException e) {
             e.printStackTrace();
             return null;

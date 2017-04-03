@@ -12,29 +12,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-//        Parent root = FXMLLoader.load(getClass().getResource("GUI.fxml"));
-//        primaryStage.setTitle("Loader");
-//        primaryStage.setScene(new Scene(root, 390, 548));
-//        primaryStage.setResizable(false);
-//        primaryStage.show();
-
-        DataCacher c = new DataCacher();
-        File checkData = new File("data.ser");
-        BTree b = new BTree();
-        if(checkData.exists()){
-            System.out.println("Cache exists.");
-            b.insertCacheData(c.retrieveData());
-            System.out.println("done");
-            b.showRoot();
-            System.out.println(b.search(b.getRoot(), "AAPL 2012-04-17"));
-        } else {
-            System.out.println("Cache does not exist...pulling from internet");
-            DataPuller d = new DataPuller();
-            d.getStockData();
-        }
-
-
-
+        Parent root = FXMLLoader.load(getClass().getResource("GUI.fxml"));
+        primaryStage.setTitle("Loader");
+        primaryStage.setScene(new Scene(root, 390, 548));
+        primaryStage.setResizable(false);
+        primaryStage.show();
     }
 
 
