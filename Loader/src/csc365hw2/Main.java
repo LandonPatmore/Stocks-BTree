@@ -18,15 +18,6 @@ public class Main extends Application {
 //        primaryStage.setResizable(false);
 //        primaryStage.show();
 
-//        BTree b = new BTree();
-//        b.insert("Lanodn", new Double[]{50.0});
-//        b.insert("Apples", new Double[]{50.0});
-//        b.insert("Daniel", new Double[]{50.0});
-//        b.cache();
-//        BTree c;
-//        c = b.retrieve();
-//        c.showRoot();
-
         DataCacher c = new DataCacher();
         File checkData = new File("data.ser");
         BTree b = new BTree();
@@ -35,6 +26,7 @@ public class Main extends Application {
             b.insertCacheData(c.retrieveData());
             System.out.println("done");
             b.showRoot();
+            System.out.println(b.search(b.getRoot(), "AAPL 2012-04-17"));
         } else {
             System.out.println("Cache does not exist...pulling from internet");
             DataPuller d = new DataPuller();
