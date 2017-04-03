@@ -25,6 +25,7 @@ target/
 .idea/
 pom.xml
 365HW1.iml
+*.ser
 #
 #
 # # Sensitive or high-churn files:
