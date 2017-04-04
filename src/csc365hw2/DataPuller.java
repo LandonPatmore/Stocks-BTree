@@ -6,6 +6,10 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
 /**
  * Created by landon on 3/23/17.
  */
@@ -19,14 +23,19 @@ public class DataPuller {
     private String KEY = "api_key=aWGH5wHqiKkFgKFSSEuB";
     private DataCacher c;
     private BTree b;
+    private NodeData n;
+    private RandomAccessFile keys;
+    private RandomAccessFile values;
 
     /**
      * creates a new ArrayList when instantiated
      */
 
-    public DataPuller() {
+    public DataPuller() throws FileNotFoundException {
         c = new DataCacher();
         b = new BTree();
+        keys = new RandomAccessFile("Keys", "rw");
+        values = new RandomAccessFile("Data", "rw");
     }
 
     /**
@@ -35,7 +44,7 @@ public class DataPuller {
      * @throws UnirestException in the case that Unirest can't reach the server for any reason so the app does not crash
      */
 
-    public BTree getStockData() throws UnirestException {
+    public void getStockData() throws UnirestException {
         HttpResponse<JsonNode> jsonResponse;
         try {
             jsonResponse = Unirest.get(URL + KEY)
@@ -54,15 +63,10 @@ public class DataPuller {
                 for (int j = 2; j <= 6; j++) {
                     info[j - 2] = data.getJSONArray(i).getDouble(j);
                 }
-
-                b.insert(key, info);
+                c.writeKeys(keys, key, c.writeValues(values, info));
             }
-            c.cacheBtree(b);
-
-            return b;
-        } catch (UnirestException e) {
+        } catch (UnirestException | IOException e) {
             e.printStackTrace();
-            return null;
         }
     }
 

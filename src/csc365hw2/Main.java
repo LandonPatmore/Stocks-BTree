@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.RandomAccessFile;
+import java.util.Arrays;
 
 public class Main extends Application {
 
@@ -17,6 +19,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 390, 548));
         primaryStage.setResizable(false);
         primaryStage.show();
+
     }
 
 

@@ -47,36 +47,41 @@ public class DataCacher {
         return null;
     }
 
-    public void cacheBtree(BTree b){
-        try {
-            ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("Btree.ser"));
-            o.writeObject(b);
-            o.close();
-            System.out.println("Btree Serialized");
-        } catch (IOException e){
-            System.out.println("Btree Error");
-            e.printStackTrace();
+    public long writeValues(RandomAccessFile r, Double[] v) throws IOException{
+        for(Double d : v){
+            r.writeDouble(d);
         }
+        return r.getFilePointer() - (Double.BYTES * 5);
     }
 
-    public BTree retrieveBtree(){
-        try{
-            ObjectInputStream o = new ObjectInputStream(new FileInputStream("Btree.ser"));
-            BTree b = (BTree) o.readObject();
-            o.close();
-
-            System.out.println("Btree Deserialized");
-            return b;
-        } catch (IOException | ClassNotFoundException e){
-            System.out.println("Error");
-            e.printStackTrace();
+    public Double[] readValues(RandomAccessFile r, long pos) throws IOException{
+        r.seek(pos);
+        Double[] d = new Double[5];
+        int i = 0;
+        while(r.getFilePointer() < pos + (Double.BYTES * 5)){
+            d[i] = r.readDouble();
+            i++;
         }
-        return null;
+        return d;
     }
 
+    public void writeKeys(RandomAccessFile keys, String k, long dPos) throws IOException{
+        keys.writeUTF(k);
+        keys.writeLong(dPos);
+    }
 
-
-
-
-
+    public BTree readKeys(RandomAccessFile keys, RandomAccessFile data) throws IOException{
+        BTree b = new BTree();
+        keys.seek(0);
+        String s;
+        long l;
+        int i = 0;
+        while(i < 100){
+            s = keys.readUTF();
+            l = keys.readLong();
+            b.insert(new NodeData(s, readValues(data, l)));
+            i++;
+        }
+        return b;
+    }
 }

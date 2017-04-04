@@ -4,16 +4,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
+import java.lang.instrument.Instrumentation;
 import java.util.Arrays;
 
 /**
  * Created by landon on 3/23/17.
  */
 
-public class BTree implements Serializable {
+public class BTree{
 
     private Node root;
-    private int minDegree;
+    private static int minDegree;
+    private int height = 0;
 
     public BTree() {
         this.minDegree = 16;
@@ -22,23 +24,6 @@ public class BTree implements Serializable {
 
     public Node getRoot() {
         return root;
-    }
-
-    public void insertCacheData(String cache){
-        JSONObject obj = new JSONObject(cache);
-
-        JSONArray cacheData = obj.getJSONObject("datatable").getJSONArray("data");
-
-        for (int i = 0; i < cacheData.length(); i++) {
-            String key;
-            key = cacheData.getJSONArray(i).get(0) + " " + cacheData.getJSONArray(i).get(1);
-            Double[] info = new Double[5];
-            for (int j = 2; j <= 6; j++) {
-                info[j - 2] = cacheData.getJSONArray(i).getDouble(j);
-            }
-
-            insert(key, info);
-        }
     }
 
     public void traverse(Node p){
@@ -55,25 +40,30 @@ public class BTree implements Serializable {
         }
     }
 
-    public void insert(String k, Double[] v) {
+    public void insert(NodeData n) {
         if (root == null) {
             root = new Node(true);
-            root.insertData(new Data(k, v));
+            root.insertData(n);
+            height++;
         } else {
             if (root.isFull()) {
                 Node s = new Node(false);
                 s.insertChildren(root);
                 root = s;
                 split(s, 0);
-                insertNonFull(s, new Data(k, v));
-
+                insertNonFull(s, n);
+                height++;
             } else {
-                insertNonFull(root, new Data(k, v));
+                insertNonFull(root, n);
             }
         }
     }
 
-    public void insertNonFull(Node x, Data d) {
+    public void getHeight(){
+        System.out.println(height);
+    }
+
+    public void insertNonFull(Node x, NodeData d) {
         int i = x.getKeys() - 1;
 
         if(x.isLeaf()){
@@ -138,44 +128,22 @@ public class BTree implements Serializable {
     }
 
     public void showRoot() {
-        for (Data d : root.getData()) {
+        for (NodeData d : root.getData()) {
             if (d != null) {
                 System.out.println(d.getKey());
             }
         }
     }
 
-    public class Data implements Comparable<Data>, Serializable {
-        private String key;
-        private Double[] values;
-
-        private Data(String k, Double[] v) {
-            key = k;
-            values = v;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public Double[] getValues() {
-            return values;
-        }
-
-        public int compareTo(Data o) {
-            return this.getKey().compareTo(o.getKey());
-        }
-    }
-
-    public class Node implements Serializable {
-        private Data[] data;
+    public static class Node implements Serializable {
+        private NodeData[] data;
         private Node[] children;
         private Integer keys;
         private Integer ch;
         private boolean isLeaf;
 
         private Node(boolean leaf) {
-            data = new Data[2 * minDegree - 1];
+            data = new NodeData[2 * minDegree - 1];
             children = new Node[2 * minDegree];
             keys = 0;
             ch = 0;
@@ -186,7 +154,7 @@ public class BTree implements Serializable {
             return children;
         }
 
-        private Data[] getData() {
+        private NodeData[] getData() {
             return data;
         }
 
@@ -202,7 +170,7 @@ public class BTree implements Serializable {
             return keys;
         }
 
-        private void insertData(Data d) {
+        private void insertData(NodeData d) {
             data[keys] = d;
             keys++;
             sortData();

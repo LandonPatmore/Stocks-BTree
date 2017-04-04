@@ -5,6 +5,9 @@ import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 public class GUIController {
     private DataCacher c;
@@ -21,23 +24,24 @@ public class GUIController {
     @FXML
     private Label lLoad;
 
+    public void getKeysData() throws IOException {
+        DataCacher c = new DataCacher();
+        b = c.readKeys(new RandomAccessFile("Keys", "rw"), new RandomAccessFile("Data", "rw"));
+    }
+
     @FXML
-    public void handleButtonClick() throws UnirestException{
-        File checkData = new File("data.ser");
+    public void handleButtonClick() throws UnirestException, IOException {
+        File checkData = new File("Keys");
         if(checkData.exists()){
             System.out.println("Cache exists.");
-            b.insertCacheData(c.retrieveData());
-            System.out.println("done");
-            tLabel.setText("Cache and Btree already exist!");
+            getKeysData();
             lLoad.setText("Loaded!");
-            b.traverse(b.getRoot());
         } else {
             System.out.println("Cache does not exist...pulling from internet");
             DataPuller d = new DataPuller();
-            b = d.getStockData();
+            d.getStockData();
+            getKeysData();
             tLabel.setText("Data Pulled, Btree created, and Cached!");
-            lLoad.setText("Loaded!");
-            b.traverse(b.getRoot());
         }
     }
 }

@@ -24,7 +24,7 @@ hs_err_pid*
 target/
 .idea/
 pom.xml
-365HW1.iml
+*.iml
 *.ser
 #
 #
