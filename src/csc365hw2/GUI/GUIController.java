@@ -1,6 +1,9 @@
-package csc365hw2;
+package csc365hw2.GUI;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
+import csc365hw2.Btree.BTree;
+import csc365hw2.Caching.DataCacher;
+import csc365hw2.Btree.DataPuller;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.*;

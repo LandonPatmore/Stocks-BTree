@@ -1,6 +1,5 @@
-package csc365hw2;
+package csc365hw2.Btree;
 
-import java.io.*;
 import java.util.Arrays;
 
 /**
@@ -36,7 +35,7 @@ public class BTree{
         }
     }
 
-    public void insert(NodeData n) {
+    public void insert(NData n) {
         if (root == null) {
             root = new Node(true);
             root.insertData(n);
@@ -59,7 +58,7 @@ public class BTree{
         return height;
     }
 
-    public void insertNonFull(Node x, NodeData d) {
+    public void insertNonFull(Node x, NData d) {
         int i = x.getKeys() - 1;
 
         if(x.isLeaf()){
@@ -124,7 +123,7 @@ public class BTree{
     }
 
     public void showRoot() {
-        for (NodeData d : root.getData()) {
+        for (NData d : root.getData()) {
             if (d != null) {
                 System.out.println(d.getKey());
             }
@@ -132,14 +131,14 @@ public class BTree{
     }
 
     public static class Node {
-        private NodeData[] data;
+        private NData[] data;
         private Node[] children;
         private Integer keys;
         private Integer ch;
         private boolean isLeaf;
 
         private Node(boolean leaf) {
-            data = new NodeData[2 * minDegree - 1];
+            data = new NData[2 * minDegree - 1];
             children = new Node[2 * minDegree];
             keys = 0;
             ch = 0;
@@ -150,7 +149,7 @@ public class BTree{
             return children;
         }
 
-        private NodeData[] getData() {
+        private NData[] getData() {
             return data;
         }
 
@@ -166,7 +165,7 @@ public class BTree{
             return keys;
         }
 
-        private void insertData(NodeData d) {
+        private void insertData(NData d) {
             data[keys] = d;
             keys++;
             sortData();

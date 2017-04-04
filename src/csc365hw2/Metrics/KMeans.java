@@ -1,4 +1,4 @@
-package csc365hw2;
+package csc365hw2.Metrics;
 
 import java.util.ArrayList;
 

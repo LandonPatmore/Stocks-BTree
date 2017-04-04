@@ -1,4 +1,4 @@
-package csc365hw2;
+package csc365hw2.GUI;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("GUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/csc365hw2/GUI/GUI.fxml"));
         primaryStage.setTitle("Loader");
         primaryStage.setScene(new Scene(root, 390, 548));
         primaryStage.setResizable(false);

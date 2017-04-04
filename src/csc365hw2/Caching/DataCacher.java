@@ -1,7 +1,9 @@
-package csc365hw2;
+package csc365hw2.Caching;
+
+import csc365hw2.Btree.BTree;
+import csc365hw2.Btree.NData;
 
 import java.io.*;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -100,7 +102,7 @@ public class DataCacher {
         while(i < preloadAmount){
             s = keys.readUTF();
             l = keys.readLong();
-            b.insert(new NodeData(s, readValues(data, l)));
+            b.insert(new NData(s, readValues(data, l)));
             i++;
         }
         return b;

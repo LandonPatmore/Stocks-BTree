@@ -1,9 +1,10 @@
-package csc365hw2;
+package csc365hw2.Btree;
 
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import csc365hw2.Caching.DataCacher;
 import org.json.JSONArray;
 
 import java.io.FileNotFoundException;
@@ -19,7 +20,7 @@ import java.io.RandomAccessFile;
  */
 public class DataPuller {
     private DataCacher c;
-    private NodeData n;
+    private NData n;
     private RandomAccessFile keys;
     private RandomAccessFile values;
     private RandomAccessFile timestamp;
@@ -38,7 +39,7 @@ public class DataPuller {
 
     /**
      * Pulls down Stock Info and then parses it into an ArrayList of KeyVals
-     * @return ArrayList of KeyVals for GUI
+     * @return ArrayList of KeyVals for csc365hw2.GUI
      * @throws UnirestException in the case that Unirest can't reach the server for any reason so the app does not crash
      */
 
