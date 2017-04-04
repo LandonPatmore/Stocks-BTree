@@ -1,7 +1,6 @@
 package csc365hw2;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by landon on 4/3/17.
@@ -11,8 +10,6 @@ public class KMeans {
 
     //Number of Clusters. This metric should be related to the number of points
     private int NUM_CLUSTERS = 3;
-    //Number of Points
-    private int NUM_POINTS = 15;
     //Min and Max X and Y
     private static final int MIN_COORDINATE = 0;
     private static final int MAX_COORDINATE = 10;
@@ -35,7 +32,8 @@ public class KMeans {
     //Initializes the process
     public void init() {
         //Create Points
-        points = Point.createRandomPoints(MIN_COORDINATE,MAX_COORDINATE,NUM_POINTS);
+        int NUM_POINTS = 15;
+        points = Point.createRandomPoints(MIN_COORDINATE,MAX_COORDINATE, NUM_POINTS);
 
         //Create Clusters
         //Set Random Centroids
@@ -113,9 +111,9 @@ public class KMeans {
 
     private void assignCluster() {
         double max = Double.MAX_VALUE;
-        double min = max;
+        double min;
         int cluster = 0;
-        double distance = 0.0;
+        double distance;
 
         for(Point point : points) {
             min = max;

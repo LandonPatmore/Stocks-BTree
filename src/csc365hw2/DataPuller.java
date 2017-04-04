@@ -18,14 +18,12 @@ import java.io.RandomAccessFile;
  * Custom class to pull data from stock site
  */
 public class DataPuller {
-    private String URL = "https://www.quandl.com/api/v3/datatables/WIKI/PRICES.json?date.gte=20110101" +
-            "&date.lt=20160101&ticker=MSFT,FB,GOOGL,INTC,CSCO,AAPL,AMZN,AMD&";
-    private String KEY = "api_key=aWGH5wHqiKkFgKFSSEuB";
     private DataCacher c;
-    private BTree b;
     private NodeData n;
     private RandomAccessFile keys;
     private RandomAccessFile values;
+    private RandomAccessFile timestamp;
+    private int amountKeys;
 
     /**
      * creates a new ArrayList when instantiated
@@ -33,9 +31,9 @@ public class DataPuller {
 
     public DataPuller() throws FileNotFoundException {
         c = new DataCacher();
-        b = new BTree();
-        keys = new RandomAccessFile("Keys", "rw");
-        values = new RandomAccessFile("Data", "rw");
+        keys = new RandomAccessFile("Keys.ser", "rw");
+        values = new RandomAccessFile("Data.ser", "rw");
+        timestamp = new RandomAccessFile("Timestamp.ser", "rw");
     }
 
     /**
@@ -47,6 +45,9 @@ public class DataPuller {
     public void getStockData() throws UnirestException {
         HttpResponse<JsonNode> jsonResponse;
         try {
+            String KEY = "api_key=aWGH5wHqiKkFgKFSSEuB";
+            String URL = "https://www.quandl.com/api/v3/datatables/WIKI/PRICES.json?date.gte=20110101" +
+                    "&date.lt=20160101&ticker=MSFT,FB,GOOGL,INTC,CSCO,AAPL,AMZN,AMD&";
             jsonResponse = Unirest.get(URL + KEY)
                     .header("Accept", "application/json")
                     .asJson();
@@ -63,8 +64,11 @@ public class DataPuller {
                 for (int j = 2; j <= 6; j++) {
                     info[j - 2] = data.getJSONArray(i).getDouble(j);
                 }
+                amountKeys++;
                 c.writeKeys(keys, key, c.writeValues(values, info));
             }
+            c.writeAmountKeys(keys, amountKeys);
+            c.writeTimestamp(timestamp, System.currentTimeMillis());
         } catch (UnirestException | IOException e) {
             e.printStackTrace();
         }

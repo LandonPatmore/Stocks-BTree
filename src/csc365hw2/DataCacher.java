@@ -1,6 +1,8 @@
 package csc365hw2;
 
 import java.io.*;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -20,10 +22,10 @@ public class DataCacher {
 
     public void cacheData(){
         try {
-            ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("data.ser"));
+            ObjectOutputStream o = new ObjectOutputStream(new FileOutputStream("HashCache.ser"));
             o.writeObject(map);
             o.close();
-            System.out.println("Data Serialized");
+            System.out.println("Data.ser Serialized");
         } catch (IOException e){
             System.out.println("Error");
             e.printStackTrace();
@@ -32,11 +34,11 @@ public class DataCacher {
 
     public String retrieveData(){
         try{
-            ObjectInputStream o = new ObjectInputStream(new FileInputStream("data.ser"));
+            ObjectInputStream o = new ObjectInputStream(new FileInputStream("HashCache.ser"));
             HashMap<String, String> h = (HashMap<String, String>) o.readObject();
             o.close();
 
-            System.out.println("Data Deserialized");
+            System.out.println("Data.ser Deserialized");
             Map.Entry<String, String> entry = h.entrySet().iterator().next();
 
             return entry.getValue();
@@ -45,6 +47,15 @@ public class DataCacher {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void writeTimestamp(RandomAccessFile r, long t) throws IOException {
+        r.writeLong(t);
+    }
+
+    public Timestamp readTimeStamp(RandomAccessFile r) throws IOException {
+        r.seek(0);
+        return new Timestamp(r.readLong());
     }
 
     public long writeValues(RandomAccessFile r, Double[] v) throws IOException{
@@ -65,18 +76,28 @@ public class DataCacher {
         return d;
     }
 
+    public void writeAmountKeys(RandomAccessFile keys, int amountKeys) throws IOException {
+        keys.writeInt(amountKeys);
+    }
+
+    public int readAmountKeys(RandomAccessFile keys) throws IOException {
+        long amountPos = keys.length() - Integer.BYTES;
+        keys.seek(amountPos);
+        return keys.readInt();
+    }
+
     public void writeKeys(RandomAccessFile keys, String k, long dPos) throws IOException{
         keys.writeUTF(k);
         keys.writeLong(dPos);
     }
 
-    public BTree readKeys(RandomAccessFile keys, RandomAccessFile data) throws IOException{
+    public BTree readKeys(RandomAccessFile keys, RandomAccessFile data, int preloadAmount) throws IOException{
         BTree b = new BTree();
         keys.seek(0);
         String s;
         long l;
         int i = 0;
-        while(i < 100){
+        while(i < preloadAmount){
             s = keys.readUTF();
             l = keys.readLong();
             b.insert(new NodeData(s, readValues(data, l)));

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -30,13 +31,39 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#handleButtonClick" prefHeight="40.0" prefWidth="320.0" text="Click to Pull, Cache, and Pre-Load!" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
-                                    <Label fx:id="tLabel" alignment="CENTER" prefHeight="17.0" prefWidth="361.0" text="Not performed yet." GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                    <Button mnemonicParsing="false" onAction="#handleCacheCheck" prefHeight="40.0" prefWidth="320.0" text="Click to Pull, Cache, and Pre-Load!" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <GridPane.margin>
-                                          <Insets top="25.0" />
+                                          <Insets top="100.0" />
+                                       </GridPane.margin></Button>
+                                    <Label fx:id="tLabel" alignment="CENTER" prefHeight="17.0" prefWidth="361.0" text="Check not done yet." GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                       <GridPane.margin>
+                                          <Insets top="-50.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <Label fx:id="lLoad" alignment="CENTER" prefHeight="17.0" prefWidth="292.0" text="Not loaded." GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                                    <Label fx:id="lLoad" alignment="CENTER" prefHeight="17.0" prefWidth="292.0" text="Not loaded." GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets top="150.0" />
+                                       </GridPane.margin></Label>
+                                    <TextField fx:id="preLoadText" maxWidth="100.0" prefWidth="100.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Label fx:id="BtreeLabel" alignment="CENTER" prefHeight="17.0" prefWidth="292.0" text="Btree not created yet." GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets top="50.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Button mnemonicParsing="false" onAction="#handleSubmitClick" text="Submit" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets top="-50.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Label fx:id="amountKeys" alignment="CENTER" prefHeight="17.0" prefWidth="292.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets top="-150.0" />
+                                       </GridPane.margin>
+                                    </Label>
                                  </children>
                               </GridPane>
                            </children>

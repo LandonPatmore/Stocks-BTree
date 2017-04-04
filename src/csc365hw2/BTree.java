@@ -1,10 +1,6 @@
 package csc365hw2;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.*;
-import java.lang.instrument.Instrumentation;
 import java.util.Arrays;
 
 /**
@@ -18,7 +14,7 @@ public class BTree{
     private int height = 0;
 
     public BTree() {
-        this.minDegree = 16;
+        minDegree = 16;
         root = null;
     }
 
@@ -59,8 +55,8 @@ public class BTree{
         }
     }
 
-    public void getHeight(){
-        System.out.println(height);
+    public int getHeight(){
+        return height;
     }
 
     public void insertNonFull(Node x, NodeData d) {
@@ -135,7 +131,7 @@ public class BTree{
         }
     }
 
-    public static class Node implements Serializable {
+    public static class Node {
         private NodeData[] data;
         private Node[] children;
         private Integer keys;

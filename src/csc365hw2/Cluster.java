@@ -1,7 +1,6 @@
 package csc365hw2;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by landon on 4/3/17.
@@ -16,7 +15,7 @@ public class Cluster {
     //Creates a new Cluster
     public Cluster(int id) {
         this.id = id;
-        this.points = new ArrayList<Point>();
+        this.points = new ArrayList<>();
         this.centroid = null;
     }
 
