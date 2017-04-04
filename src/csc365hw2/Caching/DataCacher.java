@@ -107,4 +107,20 @@ public class DataCacher {
         }
         return b;
     }
+
+    public ArrayList<String> readJustKeyString(RandomAccessFile keys, int preloadAmount) throws
+            IOException{
+        ArrayList<String> keyStrings = new ArrayList<>();
+        keys.seek(0);
+        String s;
+        long l;
+        int i = 0;
+        while(i < preloadAmount){
+            s = keys.readUTF();
+            keys.readLong();
+            keyStrings.add(s);
+            i++;
+        }
+        return keyStrings;
+    }
 }

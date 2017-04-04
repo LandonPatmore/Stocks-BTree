@@ -1,5 +1,6 @@
 package csc365hw2.Btree;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -10,28 +11,30 @@ public class BTree{
 
     private Node root;
     private static int minDegree;
-    private int height = 0;
+    private int height;
+    private ArrayList<String> closest;
 
     public BTree() {
         minDegree = 16;
         root = null;
+        closest = new ArrayList<>();
     }
 
     public Node getRoot() {
         return root;
     }
 
-    public void traverse(Node p){
+    public void traverse(Node p, String k){
         int i;
         for(i = 0; i < p.getKeys(); i++){
             if(!p.isLeaf()){
-                traverse(p.getChildren()[i]);
+                traverse(p.getChildren()[i], k);
             }
-            System.out.println(p.getData()[i].getKey());
+            ManhattanDistance(p.getData()[i].getKey(),search(getRoot(), k), p.getData()[i].getValues());
         }
 
         if(!p.isLeaf()){
-            traverse(p.getChildren()[i]);
+            traverse(p.getChildren()[i], k);
         }
     }
 
@@ -107,19 +110,40 @@ public class BTree{
         parent.insertChildren(right);
     }
 
-    public String search(Node n, String k) {
+    public Double[] search(Node n, String k) {
         int i = 0;
 
         while (i < n.getKeys() && k.compareTo(n.data[i].getKey()) > 0) {
             i += 1;
         }
         if (i < n.getKeys() && k.compareTo(n.data[i].getKey()) == 0) {
-            return Arrays.toString(n.data[i].getValues());
+            return n.data[i].getValues();
         } else if (n.isLeaf()) {
             return null;
         } else {
             return search(n.children[i], k);
         }
+    }
+
+    private void ManhattanDistance(String k, Double[] x, Double[] y){
+        Double check = 200000.0;
+        Double sumx, sumy;
+        sumx = sumy = 0.0;
+
+        for(int i = 0; i < x.length; i++){
+            sumx += x[i];
+            sumy += y[i];
+        }
+
+        Double distance = Math.abs(sumx - sumy);
+
+        if(distance < check){
+            closest.add(k);
+        }
+    }
+
+    public ArrayList<String> getClosest(){
+        return closest;
     }
 
     public void showRoot() {

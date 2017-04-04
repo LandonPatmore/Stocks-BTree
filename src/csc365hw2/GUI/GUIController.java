@@ -4,6 +4,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import csc365hw2.Btree.BTree;
 import csc365hw2.Caching.DataCacher;
 import csc365hw2.Btree.DataPuller;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.*;
@@ -14,15 +16,18 @@ import java.io.RandomAccessFile;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class GUIController {
     private BTree b;
     private DataCacher c;
     private int aKeys;
+    private ArrayList<String> list;
 
-    public GUIController() throws FileNotFoundException {
+    public void initialize() throws FileNotFoundException {
         b = new BTree();
         c = new DataCacher();
+        list = new ArrayList<>();
     }
 
     @FXML
@@ -39,6 +44,14 @@ public class GUIController {
 
     @FXML
     private TextField preLoadText;
+
+    @FXML
+    private ComboBox<String> listBox;
+
+    @FXML
+    private ListView<String> closest;
+
+
 
 
 
@@ -75,19 +88,44 @@ public class GUIController {
             getAmountKeys();
             amountKeys.setText("Enter " + aKeys + " or below to preload.");
         }
+
     }
 
     @FXML
     public void handleSubmitClick() throws IOException {
-        if(Integer.parseInt(preLoadText.getText()) <= aKeys){
+        int userInput = Integer.parseInt(preLoadText.getText());
+        if(userInput <= aKeys){
             getKeysData();
             BtreeLabel.setText("Btree preloaded!");
+
+            ObservableList<String> obList = FXCollections.observableList(c.readJustKeyString(new RandomAccessFile("Keys" +
+                    ".ser","rw"), userInput));
+            listBox.setItems(obList);
+            listBox.getSelectionModel().selectFirst();
+
+
+
             lLoad.setText("All set!");
         } else {
             BtreeLabel.setText("Not a valid key amount.");
             lLoad.setText("Error");
         }
+
     }
+
+    @FXML
+    public void handleListSimilaritySubmit(){
+        b.getClosest().clear();
+
+        String output = listBox.getSelectionModel().getSelectedItem();
+        b.traverse(b.getRoot(), output);
+
+        ObservableList<String> items =FXCollections.observableArrayList (b.getClosest());
+
+        closest.setItems(items);
+    }
+
+
 
 
 }
