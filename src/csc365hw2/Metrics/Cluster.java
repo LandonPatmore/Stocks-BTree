@@ -1,5 +1,6 @@
 package csc365hw2.Metrics;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -11,14 +12,15 @@ import java.util.ArrayList;
  */
 public class Cluster {
 
-    public ArrayList<Point> points;
-    public Point center;
-    public int id;
+    private ArrayList<Point> points;
+    private Point center;
+    private int id;
+    private DecimalFormat df;
 
-    public Cluster(int id) {
-        this.id = id;
-        this.points = new ArrayList<>();
-        this.center = null;
+    public Cluster() {
+        points = new ArrayList<>();
+        center = null;
+        df = new DecimalFormat("#.00");
     }
 
     public ArrayList<Point> getPoints() {
@@ -29,34 +31,20 @@ public class Cluster {
         points.add(point);
     }
 
-    public void setPoints(ArrayList points) {
-        this.points = points;
-    }
-
     public Point getCenter() {
         return center;
+    }
+
+    public String centerCoord(){
+        return df.format(center.getX()) + ", " + df.format(center.getY());
     }
 
     public void setCenter(Point centroid) {
         this.center = centroid;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void clear() {
         points.clear();
-    }
-
-    public void plotCluster() {
-        System.out.println("[Cluster: " + id+"]");
-        System.out.println("[Center: " + center + "]");
-        System.out.println("[Points: \n");
-        for(Point p : points) {
-            System.out.println(p);
-        }
-        System.out.println("]");
     }
 
 }

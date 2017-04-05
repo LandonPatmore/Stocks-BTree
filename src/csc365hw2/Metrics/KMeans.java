@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class KMeans {
 
-    private int NUM_CLUSTERS = 31;
+    private int NUM_CLUSTERS = 0;
     private static final int MIN_COORDINATE = 0;
     private static final int MAX_COORDINATE = 100000000;
 
@@ -19,12 +19,20 @@ public class KMeans {
     private ArrayList<Cluster> clusters;
 
     public KMeans() {
-        this.points = new ArrayList();
-        this.clusters = new ArrayList();
+        points = new ArrayList<>();
+        clusters = new ArrayList<>();
+    }
+
+    public void setClusters(int n){
+        NUM_CLUSTERS = n;
     }
 
     public void addPoints(ArrayList<Point> p){
         points = p;
+    }
+
+    public void clearPoints(){
+        points.clear();
     }
 
     public int getNUM_CLUSTERS(){
@@ -35,23 +43,12 @@ public class KMeans {
         return clusters;
     }
 
-    //Initializes the process
     public void init() {
         for (int i = 0; i < NUM_CLUSTERS; i++) {
-            Cluster cluster = new Cluster(i);
+            Cluster cluster = new Cluster();
             Point centroid = Point.createRandomPoint(MIN_COORDINATE,MAX_COORDINATE);
             cluster.setCenter(centroid);
             clusters.add(cluster);
-        }
-
-        //Print Initial state
-        plotClusters();
-    }
-
-    private void plotClusters() {
-        for (int i = 0; i < NUM_CLUSTERS; i++) {
-            Cluster c = clusters.get(i);
-            c.plotCluster();
         }
     }
 
@@ -76,10 +73,6 @@ public class KMeans {
             for(int i = 0; i < lastCenter.size(); i++) {
                 distance += Point.distance(lastCenter.get(i),currentCenters.get(i));
             }
-            System.out.println("#################");
-            System.out.println("Iteration: " + iteration);
-            System.out.println("Center distances: " + distance);
-            plotClusters();
 
             if(distance == 0) {
                 finish = true;
@@ -97,7 +90,7 @@ public class KMeans {
         ArrayList<Point> centers = new ArrayList(NUM_CLUSTERS);
         for(Cluster cluster : clusters) {
             Point aux = cluster.getCenter();
-            Point point = new Point(aux.getX(),aux.getY());
+            Point point = new Point("",aux.getX(),aux.getY());
             centers.add(point);
         }
         return centers;

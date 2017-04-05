@@ -2,10 +2,10 @@ package csc365hw2.GUI;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 import csc365hw2.Btree.BTree;
-import csc365hw2.Btree.Data;
 import csc365hw2.Caching.DataCacher;
 import csc365hw2.Btree.DataPuller;
 import csc365hw2.Metrics.KMeans;
+import csc365hw2.Metrics.Point;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -55,13 +55,25 @@ public class GUIController {
     private Label amountKeys;
 
     @FXML
+    private Label clusterID;
+
+    @FXML
+    private Label centerPoints;
+
+    @FXML
     private TextField preLoadText;
+
+    @FXML
+    private TextField kMeansText;
 
     @FXML
     private ComboBox<String> listBox;
 
     @FXML
-    private ListView<Data> closest;
+    private ListView<Point> clusterPoints;
+
+    @FXML
+    private Label kMeans;
 
 
     /**
@@ -136,14 +148,6 @@ public class GUIController {
             getKeysData();
             BtreeLabel.setText("Btree preloaded!");
 
-            ArrayList<String> numClusters = new ArrayList<>();
-            for(int i = 0; i < k.getNUM_CLUSTERS(); i++){
-                numClusters.add(String.valueOf(i));
-            }
-
-            ObservableList<String> obList = FXCollections.observableList(numClusters);
-            listBox.setItems(obList);
-            listBox.getSelectionModel().selectFirst();
 
             lLoad.setText("All set!");
         } else {
@@ -154,27 +158,45 @@ public class GUIController {
     }
 
     /**
-     * Used to show the similar keys to the current one selected in the Combobox
+     * Used to create clusters
+     * @throws IOException
      */
+
     @FXML
-    public void handleListSimilaritySubmit() throws IOException {
+    public void handleKMeansClustering() throws IOException {
+
+        k.setClusters(Integer.parseInt(kMeansText.getText()));
+        k.clearPoints();
         b.traverse(b.getRoot());
         k.addPoints(b.getPoints());
         k.init();
         k.calculate();
 
-        System.out.println(k.getClusters().get(1).getId());
+        ArrayList<String> numClusters = new ArrayList<>();
+        for(int i = 0; i < k.getNUM_CLUSTERS(); i++){
+            numClusters.add(String.valueOf(i));
+        }
 
+        ObservableList<String> obList = FXCollections.observableList(numClusters);
+        listBox.setItems(obList);
+        listBox.getSelectionModel().selectFirst();
 
+        kMeans.setText("Clustering complete!");
+    }
 
-//        b.getClosest().clear();
-//
-//        String output = listBox.getSelectionModel().getSelectedItem();
-//        b.traverse(b.getRoot(), output);
-//
-//        ObservableList<Data> items =FXCollections.observableArrayList (b.getClosest());
-//
-//        closest.setItems(items);
+    /**
+     * Used to show the similar keys to the current one selected in the Combobox
+     */
+    @FXML
+    public void handleListSimilaritySubmit() throws IOException {
+
+        String output = listBox.getSelectionModel().getSelectedItem();
+        clusterID.setText(output);
+        centerPoints.setText(k.getClusters().get(Integer.parseInt(output)).centerCoord());
+
+        ObservableList<Point> items =FXCollections.observableArrayList(k.getClusters().get(Integer.parseInt(output)).getPoints());
+
+        clusterPoints.setItems(items);
     }
 
 

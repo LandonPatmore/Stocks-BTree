@@ -37,42 +37,57 @@
                                  <children>
                                     <Button mnemonicParsing="false" onAction="#handleCacheCheck" prefHeight="40.0" prefWidth="320.0" text="Click to Pull, Cache, and Pre-Load!" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                        <GridPane.margin>
-                                          <Insets />
+                                          <Insets top="-200.0" />
                                        </GridPane.margin></Button>
                                     <Label fx:id="tLabel" alignment="CENTER" prefHeight="17.0" prefWidth="361.0" text="Check not done yet." GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                                        <GridPane.margin>
-                                          <Insets top="-100.0" />
+                                          <Insets top="-200.0" />
                                        </GridPane.margin>
                                     </Label>
                                     <Label fx:id="lLoad" alignment="CENTER" prefHeight="17.0" prefWidth="292.0" text="Not loaded." GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                        <GridPane.margin>
-                                          <Insets />
+                                          <Insets top="-200.0" />
                                        </GridPane.margin></Label>
                                     <TextField fx:id="preLoadText" maxWidth="100.0" prefWidth="100.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                                        <GridPane.margin>
-                                          <Insets top="-50.0" />
+                                          <Insets top="-150.0" />
                                        </GridPane.margin>
                                     </TextField>
                                     <Label fx:id="BtreeLabel" alignment="CENTER" prefHeight="17.0" prefWidth="292.0" text="Btree not created yet." GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                        <GridPane.margin>
-                                          <Insets top="-100.0" />
+                                          <Insets top="-300.0" />
                                        </GridPane.margin>
                                     </Label>
                                     <Button mnemonicParsing="false" onAction="#handleSubmitClick" text="Submit" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                        <GridPane.margin>
-                                          <Insets top="-200.0" />
+                                          <Insets top="-400.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Label fx:id="amountKeys" alignment="CENTER" prefHeight="17.0" prefWidth="292.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                    <Button mnemonicParsing="false" onAction="#handleKMeansClustering" prefHeight="27.0" prefWidth="151.0" text="KMeans Clustering!" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                        <GridPane.margin>
-                                          <Insets top="-150.0" />
+                                          <Insets top="50.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Label fx:id="kMeans" text="Not performed yet." GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets top="200.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <Button mnemonicParsing="false" prefHeight="27.0" prefWidth="151.0" text="KMeans Clustering!" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                    <TextField fx:id="kMeansText" maxWidth="100.0" prefWidth="100.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                                        <GridPane.margin>
-                                          <Insets top="100.0" />
+                                          <Insets top="-100.0" />
                                        </GridPane.margin>
-                                    </Button>
+                                    </TextField>
+                                    <Label fx:id="amountKeys" text="Amount of keys." GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets top="50.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Enter amount of clusters." GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets top="-25.0" />
+                                       </GridPane.margin>
+                                    </Label>
                                  </children>
                               </GridPane>
                            </children>
@@ -106,10 +121,10 @@
                                         <effect>
                                             <DropShadow />
                                         </effect></Button>
-                                    <ListView fx:id="closest" prefHeight="185.0" prefWidth="374.0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                                    <ListView fx:id="clusterPoints" prefHeight="185.0" prefWidth="374.0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                               <Label text="Center (x,y):">
                                  <GridPane.margin>
-                                    <Insets top="50.0" />
+                                    <Insets left="15.0" top="50.0" />
                                  </GridPane.margin>
                                  <font>
                                     <Font size="24.0" />
@@ -117,18 +132,18 @@
                               </Label>
                               <Label text="Cluster #:">
                                  <GridPane.margin>
-                                    <Insets />
+                                    <Insets left="15.0" />
                                  </GridPane.margin>
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <Label text="0" GridPane.halignment="RIGHT">
+                              <Label fx:id="centerPoints" text="0" GridPane.halignment="RIGHT">
                                  <GridPane.margin>
                                     <Insets top="50.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Label text="0" GridPane.halignment="RIGHT">
+                              <Label fx:id="clusterID" text="0" GridPane.halignment="RIGHT">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>

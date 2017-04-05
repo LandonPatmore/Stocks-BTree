@@ -42,7 +42,6 @@ public class BTree{
     /**
      *
      * @param p - The Node to start from to traverse down a subtree
-     * @param k - The String key to search for in the tree to pass to the search method
      */
     public void traverse(Node p) throws IOException {
         int i;
@@ -51,7 +50,7 @@ public class BTree{
                 traverse(p.getChildren()[i]);
             }
             Data d = p.getData()[i];
-            points.add(new Point(d.getValues()[0], d.getValues()[1]));
+            points.add(new Point(d.getKey(), d.getValues()[0], d.getValues()[1]));
         }
 
         if(!p.isLeaf()){

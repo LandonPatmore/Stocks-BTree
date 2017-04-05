@@ -25,7 +25,7 @@ public class Data implements Comparable<Data>{
     /**
      * Constructor to create a Data Object
      * @param k - String key
-     * @param v - Double[] values
+     * @param dPos - Long position of value in Data file
      */
     public Data(String k, long dPos) throws FileNotFoundException {
         key = k;
@@ -66,10 +66,5 @@ public class Data implements Comparable<Data>{
      */
     public int compareTo(Data o) {
         return this.getKey().compareTo(o.getKey());
-    }
-
-    @Override
-    public String toString() {
-        return key + " ||||| " + df.format(distance);
     }
 }
