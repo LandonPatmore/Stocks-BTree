@@ -46,13 +46,13 @@ public class Point {
         return this.cluster_number;
     }
 
-    protected static double distance(Point p, Point centroid) {
-        return Math.sqrt(Math.pow((centroid.getY() - p.getY()), 2) + Math.pow((centroid.getX() - p.getX()), 2));
+    protected static double distance(Point p, Point center) {
+        return Math.sqrt(Math.pow((center.getY() - p.getY()), 2) + Math.pow((center.getX() - p.getX()), 2));
     }
 
     protected static Point createRandomPoint(int min, int max) {
         Random r = new Random();
-        double x = min + (max - min) * r.nextDouble();
+        double x = min + 1000 * r.nextDouble();
         double y = min + (max - min) * r.nextDouble();
         return new Point(x,y);
     }

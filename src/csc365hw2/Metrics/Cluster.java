@@ -12,13 +12,13 @@ import java.util.ArrayList;
 public class Cluster {
 
     public ArrayList<Point> points;
-    public Point centroid;
+    public Point center;
     public int id;
 
     public Cluster(int id) {
         this.id = id;
         this.points = new ArrayList<>();
-        this.centroid = null;
+        this.center = null;
     }
 
     public ArrayList<Point> getPoints() {
@@ -33,12 +33,12 @@ public class Cluster {
         this.points = points;
     }
 
-    public Point getCentroid() {
-        return centroid;
+    public Point getCenter() {
+        return center;
     }
 
-    public void setCentroid(Point centroid) {
-        this.centroid = centroid;
+    public void setCenter(Point centroid) {
+        this.center = centroid;
     }
 
     public int getId() {
@@ -51,7 +51,7 @@ public class Cluster {
 
     public void plotCluster() {
         System.out.println("[Cluster: " + id+"]");
-        System.out.println("[Centroid: " + centroid + "]");
+        System.out.println("[Center: " + center + "]");
         System.out.println("[Points: \n");
         for(Point p : points) {
             System.out.println(p);

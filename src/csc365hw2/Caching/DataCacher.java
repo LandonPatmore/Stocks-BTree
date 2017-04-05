@@ -96,7 +96,7 @@ public class DataCacher {
         for(Double d : v) {
             r.writeDouble(d);
         }
-        return r.getFilePointer() - (Double.BYTES * 5);
+        return r.getFilePointer() - (Double.BYTES * 2);
     }
 
     /**
@@ -110,7 +110,7 @@ public class DataCacher {
         r.seek(pos);
         Double[] d = new Double[5];
         int i = 0;
-        while(r.getFilePointer() < pos + (Double.BYTES * 5)){
+        while(r.getFilePointer() < pos + (Double.BYTES * 2)){
             d[i] = r.readDouble();
             i++;
         }

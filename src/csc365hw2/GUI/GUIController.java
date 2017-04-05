@@ -5,6 +5,7 @@ import csc365hw2.Btree.BTree;
 import csc365hw2.Btree.Data;
 import csc365hw2.Caching.DataCacher;
 import csc365hw2.Btree.DataPuller;
+import csc365hw2.Metrics.KMeans;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,6 +28,7 @@ public class GUIController {
     private BTree b;
     private DataCacher c;
     private DataPuller d;
+    private KMeans k;
     private int aKeys;
 
     /**
@@ -37,6 +39,7 @@ public class GUIController {
         b = new BTree();
         c = new DataCacher();
         d = new DataPuller();
+        k = new KMeans();
     }
 
     @FXML
@@ -133,11 +136,14 @@ public class GUIController {
             getKeysData();
             BtreeLabel.setText("Btree preloaded!");
 
-            ObservableList<String> obList = FXCollections.observableList(c.getKeyStrings());
+            ArrayList<String> numClusters = new ArrayList<>();
+            for(int i = 0; i < k.getNUM_CLUSTERS(); i++){
+                numClusters.add(String.valueOf(i));
+            }
+
+            ObservableList<String> obList = FXCollections.observableList(numClusters);
             listBox.setItems(obList);
             listBox.getSelectionModel().selectFirst();
-
-
 
             lLoad.setText("All set!");
         } else {
@@ -152,14 +158,23 @@ public class GUIController {
      */
     @FXML
     public void handleListSimilaritySubmit() throws IOException {
-        b.getClosest().clear();
+        b.traverse(b.getRoot());
+        k.addPoints(b.getPoints());
+        k.init();
+        k.calculate();
 
-        String output = listBox.getSelectionModel().getSelectedItem();
-        b.traverse(b.getRoot(), output);
+        System.out.println(k.getClusters().get(1).getId());
 
-        ObservableList<Data> items =FXCollections.observableArrayList (b.getClosest());
 
-        closest.setItems(items);
+
+//        b.getClosest().clear();
+//
+//        String output = listBox.getSelectionModel().getSelectedItem();
+//        b.traverse(b.getRoot(), output);
+//
+//        ObservableList<Data> items =FXCollections.observableArrayList (b.getClosest());
+//
+//        closest.setItems(items);
     }
 
 

@@ -1,5 +1,7 @@
 package csc365hw2.Btree;
 
+import csc365hw2.Metrics.Point;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +20,7 @@ public class BTree{
     private Node root;
     private static int minDegree;
     private int height;
-    private ArrayList<Data> closest;
+    private ArrayList<Point> points;
 
     /**
      * Constructor to create a BTree
@@ -26,7 +28,7 @@ public class BTree{
     public BTree() {
         minDegree = 16;
         root = null;
-        closest = new ArrayList<>();
+        points = new ArrayList<>();
     }
 
     /**
@@ -42,18 +44,23 @@ public class BTree{
      * @param p - The Node to start from to traverse down a subtree
      * @param k - The String key to search for in the tree to pass to the search method
      */
-    public void traverse(Node p, String k) throws IOException {
+    public void traverse(Node p) throws IOException {
         int i;
         for(i = 0; i < p.getKeys(); i++){
             if(!p.isLeaf()){
-                traverse(p.getChildren()[i], k);
+                traverse(p.getChildren()[i]);
             }
-            ManhattanDistance(search(getRoot(), k), p.getData()[i]);
+            Data d = p.getData()[i];
+            points.add(new Point(d.getValues()[0], d.getValues()[1]));
         }
 
         if(!p.isLeaf()){
-            traverse(p.getChildren()[i], k);
+            traverse(p.getChildren()[i]);
         }
+    }
+
+    public ArrayList<Point> getPoints(){
+        return points;
     }
 
     /**
@@ -165,50 +172,6 @@ public class BTree{
         } else {
             return search(n.children[i], k);
         }
-    }
-
-    /**
-     *
-     * @param k - The String key to be added to the ArrayList if the if-statement is True
-     * @param x - Double[] of values
-     * @param y - Double[] of values
-     */
-
-    private void ManhattanDistance(Data a, Data z) throws IOException {
-        Double check = 200000.0;
-
-        Double[] x = a.getValues();
-        Double[] y = z.getValues();
-
-        Double sumx, sumy;
-        sumx = sumy = 0.0;
-
-        for (int i = 0; i < x.length; i++) {
-            sumx += x[i];
-            sumy += y[i];
-        }
-
-        Double distance = Math.abs(sumx - sumy);
-
-        if (!a.getKey().equals(z.getKey())) {
-            if (distance < check) {
-                z.setDistance(distance);
-                closest.add(z);
-            }
-        }
-    }
-
-    /**
-     *
-     * @return ArrayList<String> Closest values
-     */
-    public ArrayList<Data> getClosest(){
-        Collections.sort(closest, new Comparator<Data>() {
-            public int compare(Data d1, Data d2) {
-                return (int) (d1.getDistance() - d2.getDistance());
-            }
-        });
-        return closest;
     }
 
     /**

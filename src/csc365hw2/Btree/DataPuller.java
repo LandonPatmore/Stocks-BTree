@@ -5,6 +5,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import csc365hw2.Caching.DataCacher;
+import csc365hw2.Metrics.KMeans;
 import org.json.JSONArray;
 
 import java.io.FileNotFoundException;
@@ -32,9 +33,6 @@ public class DataPuller {
 
     public DataPuller() throws FileNotFoundException {
         c = new DataCacher();
-        keys = new RandomAccessFile("Keys.ser", "rw");
-        values = new RandomAccessFile("Data.ser", "rw");
-        timestamp = new RandomAccessFile("Timestamp.ser", "rw");
     }
 
     /**
@@ -42,8 +40,12 @@ public class DataPuller {
      * for Cache reloading
      * @throws UnirestException if the site cannot be reached
      */
-    public void getStockData() throws UnirestException {
+    public void getStockData() throws UnirestException, FileNotFoundException {
+        keys = new RandomAccessFile("Keys.ser", "rw");
+        values = new RandomAccessFile("Data.ser", "rw");
+        timestamp = new RandomAccessFile("Timestamp.ser", "rw");
         HttpResponse<JsonNode> jsonResponse;
+
         try {
             String KEY = "api_key=aWGH5wHqiKkFgKFSSEuB";
             String URL = "https://www.quandl.com/api/v3/datatables/WIKI/PRICES.json?date.gte=20110101" +
@@ -60,10 +62,9 @@ public class DataPuller {
 
             for (int i = 0; i < data.length(); i++) {
                 String key = data.getJSONArray(i).get(0) + " " + data.getJSONArray(i).get(1);
-                Double[] info = new Double[5];
-                for (int j = 2; j <= 6; j++) {
-                    info[j - 2] = data.getJSONArray(i).getDouble(j);
-                }
+                Double[] info = new Double[2];
+                info[0] = data.getJSONArray(i).getDouble(2);
+                info[1] = data.getJSONArray(i).getDouble(6);
                 amountKeys++;
                 c.writeKeys(keys, key, c.writeValues(values, info));
             }

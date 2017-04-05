@@ -11,9 +11,9 @@ import java.util.ArrayList;
  */
 public class KMeans {
 
-    private int NUM_CLUSTERS = 7;
+    private int NUM_CLUSTERS = 31;
     private static final int MIN_COORDINATE = 0;
-    private static final int MAX_COORDINATE = 100;
+    private static final int MAX_COORDINATE = 100000000;
 
     private ArrayList<Point> points;
     private ArrayList<Cluster> clusters;
@@ -23,14 +23,29 @@ public class KMeans {
         this.clusters = new ArrayList();
     }
 
-    public static void main(String[] args) {
-
-        KMeans kmeans = new KMeans();
-        kmeans.init();
-        kmeans.calculate();
+    public void addPoints(ArrayList<Point> p){
+        points = p;
     }
 
+    public int getNUM_CLUSTERS(){
+        return NUM_CLUSTERS;
+    }
+
+    public ArrayList<Cluster> getClusters(){
+        return clusters;
+    }
+
+    //Initializes the process
     public void init() {
+        for (int i = 0; i < NUM_CLUSTERS; i++) {
+            Cluster cluster = new Cluster(i);
+            Point centroid = Point.createRandomPoint(MIN_COORDINATE,MAX_COORDINATE);
+            cluster.setCenter(centroid);
+            clusters.add(cluster);
+        }
+
+        //Print Initial state
+        plotClusters();
     }
 
     private void plotClusters() {
@@ -47,23 +62,23 @@ public class KMeans {
         while(!finish) {
             clearClusters();
 
-            ArrayList<Point> lastCentroids = getCentroids();
+            ArrayList<Point> lastCenter = getCenters();
 
             assignCluster();
 
-            calculateCentroids();
+            calculateCenters();
 
             iteration++;
 
-            ArrayList<Point> currentCentroids = getCentroids();
+            ArrayList<Point> currentCenters = getCenters();
 
             double distance = 0;
-            for(int i = 0; i < lastCentroids.size(); i++) {
-                distance += Point.distance(lastCentroids.get(i),currentCentroids.get(i));
+            for(int i = 0; i < lastCenter.size(); i++) {
+                distance += Point.distance(lastCenter.get(i),currentCenters.get(i));
             }
             System.out.println("#################");
             System.out.println("Iteration: " + iteration);
-            System.out.println("Centroid distances: " + distance);
+            System.out.println("Center distances: " + distance);
             plotClusters();
 
             if(distance == 0) {
@@ -78,14 +93,14 @@ public class KMeans {
         }
     }
 
-    private ArrayList<Point> getCentroids() {
-        ArrayList<Point> centroids = new ArrayList(NUM_CLUSTERS);
+    private ArrayList<Point> getCenters() {
+        ArrayList<Point> centers = new ArrayList(NUM_CLUSTERS);
         for(Cluster cluster : clusters) {
-            Point aux = cluster.getCentroid();
+            Point aux = cluster.getCenter();
             Point point = new Point(aux.getX(),aux.getY());
-            centroids.add(point);
+            centers.add(point);
         }
-        return centroids;
+        return centers;
     }
 
     private void assignCluster() {
@@ -98,7 +113,7 @@ public class KMeans {
             min = max;
             for(int i = 0; i < NUM_CLUSTERS; i++) {
                 Cluster c = clusters.get(i);
-                distance = Point.distance(point, c.getCentroid());
+                distance = Point.distance(point, c.getCenter());
                 if(distance < min){
                     min = distance;
                     cluster = i;
@@ -109,7 +124,7 @@ public class KMeans {
         }
     }
 
-    private void calculateCentroids() {
+    private void calculateCenters() {
         for(Cluster cluster : clusters) {
             double sumX = 0;
             double sumY = 0;
@@ -121,12 +136,12 @@ public class KMeans {
                 sumY += point.getY();
             }
 
-            Point centroid = cluster.getCentroid();
+            Point center = cluster.getCenter();
             if(n_points > 0) {
                 double newX = sumX / n_points;
                 double newY = sumY / n_points;
-                centroid.setX(newX);
-                centroid.setY(newY);
+                center.setX(newX);
+                center.setY(newY);
             }
         }
     }
