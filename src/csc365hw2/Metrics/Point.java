@@ -7,6 +7,9 @@ import java.util.Random;
  * Created by landon on 4/3/17.
  */
 
+/**
+ * Class to create Points (NOT IMPLEMENTED YET)
+ */
 public class Point {
 
     private double x = 0;
@@ -43,12 +46,10 @@ public class Point {
         return this.cluster_number;
     }
 
-    //Calculates the distance between two points.
     protected static double distance(Point p, Point centroid) {
         return Math.sqrt(Math.pow((centroid.getY() - p.getY()), 2) + Math.pow((centroid.getX() - p.getX()), 2));
     }
 
-    //Creates random point
     protected static Point createRandomPoint(int min, int max) {
         Random r = new Random();
         double x = min + (max - min) * r.nextDouble();

@@ -20,14 +20,14 @@ import java.io.RandomAccessFile;
  */
 public class DataPuller {
     private DataCacher c;
-    private NData n;
+    private Data n;
+    private int amountKeys;
     private RandomAccessFile keys;
     private RandomAccessFile values;
     private RandomAccessFile timestamp;
-    private int amountKeys;
 
     /**
-     * creates a new ArrayList when instantiated
+     * Constructor for DataPuller
      */
 
     public DataPuller() throws FileNotFoundException {
@@ -38,11 +38,10 @@ public class DataPuller {
     }
 
     /**
-     * Pulls down Stock Info and then parses it into an ArrayList of KeyVals
-     * @return ArrayList of KeyVals for csc365hw2.GUI
-     * @throws UnirestException in the case that Unirest can't reach the server for any reason so the app does not crash
+     * Gets the data, parses it, puts it into seperate files based on Keys and Values and also records a timestamp
+     * for Cache reloading
+     * @throws UnirestException if the site cannot be reached
      */
-
     public void getStockData() throws UnirestException {
         HttpResponse<JsonNode> jsonResponse;
         try {

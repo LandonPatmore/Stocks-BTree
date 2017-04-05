@@ -6,13 +6,14 @@ import java.util.ArrayList;
  * Created by landon on 4/3/17.
  */
 
+/**
+ * Class to create KMeans (NOT IMPLEMENTED YET)
+ */
 public class KMeans {
 
-    //Number of Clusters. This metric should be related to the number of points
-    private int NUM_CLUSTERS = 3;
-    //Min and Max X and Y
+    private int NUM_CLUSTERS = 7;
     private static final int MIN_COORDINATE = 0;
-    private static final int MAX_COORDINATE = 10;
+    private static final int MAX_COORDINATE = 100;
 
     private ArrayList<Point> points;
     private ArrayList<Cluster> clusters;
@@ -29,23 +30,7 @@ public class KMeans {
         kmeans.calculate();
     }
 
-    //Initializes the process
     public void init() {
-        //Create Points
-        int NUM_POINTS = 15;
-        points = Point.createRandomPoints(MIN_COORDINATE,MAX_COORDINATE, NUM_POINTS);
-
-        //Create Clusters
-        //Set Random Centroids
-        for (int i = 0; i < NUM_CLUSTERS; i++) {
-            Cluster cluster = new Cluster(i);
-            Point centroid = Point.createRandomPoint(MIN_COORDINATE,MAX_COORDINATE);
-            cluster.setCentroid(centroid);
-            clusters.add(cluster);
-        }
-
-        //Print Initial state
-        plotClusters();
     }
 
     private void plotClusters() {
@@ -55,29 +40,23 @@ public class KMeans {
         }
     }
 
-    //The process to calculate the K Means, with iterating method.
     public void calculate() {
         boolean finish = false;
         int iteration = 0;
 
-        // Add in new data, one at a time, recalculating centroids with each new one.
         while(!finish) {
-            //Clear cluster state
             clearClusters();
 
             ArrayList<Point> lastCentroids = getCentroids();
 
-            //Assign points to the closer cluster
             assignCluster();
 
-            //Calculate new centroids.
             calculateCentroids();
 
             iteration++;
 
             ArrayList<Point> currentCentroids = getCentroids();
 
-            //Calculates total distance between new and old Centroids
             double distance = 0;
             for(int i = 0; i < lastCentroids.size(); i++) {
                 distance += Point.distance(lastCentroids.get(i),currentCentroids.get(i));

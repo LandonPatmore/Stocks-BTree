@@ -90,7 +90,7 @@
                                     <RowConstraints maxHeight="469.0" minHeight="10.0" prefHeight="342.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                 <children>
-                                    <ComboBox fx:id="listBox" prefHeight="27.0" prefWidth="308.0" visibleRowCount="20" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                                    <ComboBox fx:id="listBox" prefHeight="27.0" prefWidth="275.0" visibleRowCount="20" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                                         <GridPane.margin>
                                             <Insets top="10.0" />
                                         </GridPane.margin></ComboBox>

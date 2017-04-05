@@ -6,13 +6,15 @@ import java.util.ArrayList;
  * Created by landon on 4/3/17.
  */
 
+/**
+ * Class to create Clusters (NOT IMPLEMENTED YET)
+ */
 public class Cluster {
 
     public ArrayList<Point> points;
     public Point centroid;
     public int id;
 
-    //Creates a new Cluster
     public Cluster(int id) {
         this.id = id;
         this.points = new ArrayList<>();
