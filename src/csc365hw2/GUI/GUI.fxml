@@ -151,6 +151,22 @@
                                     <Font size="24.0" />
                                  </font>
                               </Label>
+                              <Label text="Amount of Points:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets left="15.0" top="100.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label fx:id="amountPoints" text="0" GridPane.halignment="RIGHT">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets top="100.0" />
+                                 </GridPane.margin>
+                              </Label>
                                 </children>
                             </GridPane>
                         </children>

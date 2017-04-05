@@ -11,38 +11,63 @@ import java.util.ArrayList;
  */
 public class KMeans {
 
-    private int NUM_CLUSTERS = 0;
+    private int NUM_CLUSTERS;
     private static final int MIN_COORDINATE = 0;
     private static final int MAX_COORDINATE = 100000000;
 
     private ArrayList<Point> points;
     private ArrayList<Cluster> clusters;
 
+    /**
+     * Constructor
+     */
     public KMeans() {
         points = new ArrayList<>();
         clusters = new ArrayList<>();
     }
 
+    /**
+     *
+     * @param n - Integer amount of clusters
+     */
     public void setClusters(int n){
         NUM_CLUSTERS = n;
     }
 
+    /**
+     *
+     * @param p - ArrayList<Point> of Point Objects
+     */
     public void addPoints(ArrayList<Point> p){
         points = p;
     }
 
+    /**
+     * Clears the points
+     */
     public void clearPoints(){
         points.clear();
     }
 
+    /**
+     *
+     * @return Integer number of Clusters
+     */
     public int getNUM_CLUSTERS(){
         return NUM_CLUSTERS;
     }
 
+    /**
+     *
+     * @return ArrayList<Cluster> of Cluster Objects
+     */
     public ArrayList<Cluster> getClusters(){
         return clusters;
     }
 
+    /**
+     * Initializes the clusters
+     */
     public void init() {
         for (int i = 0; i < NUM_CLUSTERS; i++) {
             Cluster cluster = new Cluster();
@@ -52,9 +77,11 @@ public class KMeans {
         }
     }
 
+    /**
+     * Calculates the clusters' points away from the centers and the centers themselves
+     */
     public void calculate() {
         boolean finish = false;
-        int iteration = 0;
 
         while(!finish) {
             clearClusters();
@@ -64,8 +91,6 @@ public class KMeans {
             assignCluster();
 
             calculateCenters();
-
-            iteration++;
 
             ArrayList<Point> currentCenters = getCenters();
 
@@ -80,14 +105,21 @@ public class KMeans {
         }
     }
 
+    /**
+     * Clears the clusters
+     */
     private void clearClusters() {
         for(Cluster cluster : clusters) {
             cluster.clear();
         }
     }
 
+    /**
+     *
+     * @return ArrayList<Point> of Point Objects
+     */
     private ArrayList<Point> getCenters() {
-        ArrayList<Point> centers = new ArrayList(NUM_CLUSTERS);
+        ArrayList<Point> centers = new ArrayList<>(NUM_CLUSTERS);
         for(Cluster cluster : clusters) {
             Point aux = cluster.getCenter();
             Point point = new Point("",aux.getX(),aux.getY());
@@ -96,6 +128,9 @@ public class KMeans {
         return centers;
     }
 
+    /**
+     * Assigns points to clusters
+     */
     private void assignCluster() {
         double max = Double.MAX_VALUE;
         double min;
@@ -117,6 +152,9 @@ public class KMeans {
         }
     }
 
+    /**
+     * Calculates the centers of the clusters
+     */
     private void calculateCenters() {
         for(Cluster cluster : clusters) {
             double sumX = 0;

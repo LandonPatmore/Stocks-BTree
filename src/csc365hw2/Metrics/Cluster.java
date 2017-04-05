@@ -8,41 +8,66 @@ import java.util.ArrayList;
  */
 
 /**
- * Class to create Clusters (NOT IMPLEMENTED YET)
+ * Class to create Clusters
  */
 public class Cluster {
 
     private ArrayList<Point> points;
     private Point center;
-    private int id;
     private DecimalFormat df;
 
+    /**
+     * Constructor
+     */
     public Cluster() {
         points = new ArrayList<>();
         center = null;
         df = new DecimalFormat("#.00");
     }
 
+    /**
+     *
+     * @return ArrayList<Point> Objects
+     */
     public ArrayList<Point> getPoints() {
         return points;
     }
 
+    /**
+     *
+     * @param point - Point Object
+     */
     public void addPoint(Point point) {
         points.add(point);
     }
 
+    /**
+     *
+     * @return Point Object
+     */
     public Point getCenter() {
         return center;
     }
 
+    /**
+     *
+     * @return String of Cluster Center
+     */
     public String centerCoord(){
         return df.format(center.getX()) + ", " + df.format(center.getY());
     }
 
-    public void setCenter(Point centroid) {
-        this.center = centroid;
+    /**
+     *
+     * @param centro - Point Object
+     */
+    public void setCenter(Point centro) {
+        center = centro;
     }
 
+    /**
+     * Clears the points
+     */
     public void clear() {
         points.clear();
     }

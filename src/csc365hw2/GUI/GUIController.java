@@ -61,6 +61,12 @@ public class GUIController {
     private Label centerPoints;
 
     @FXML
+    private Label kMeans;
+
+    @FXML
+    private Label amountPoints;
+
+    @FXML
     private TextField preLoadText;
 
     @FXML
@@ -71,9 +77,6 @@ public class GUIController {
 
     @FXML
     private ListView<Point> clusterPoints;
-
-    @FXML
-    private Label kMeans;
 
 
     /**
@@ -193,6 +196,7 @@ public class GUIController {
         String output = listBox.getSelectionModel().getSelectedItem();
         clusterID.setText(output);
         centerPoints.setText(k.getClusters().get(Integer.parseInt(output)).centerCoord());
+        amountPoints.setText(String.valueOf(k.getClusters().get(Integer.parseInt(output)).getPoints().size()));
 
         ObservableList<Point> items =FXCollections.observableArrayList(k.getClusters().get(Integer.parseInt(output)).getPoints());
 
