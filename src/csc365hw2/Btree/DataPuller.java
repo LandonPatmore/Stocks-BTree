@@ -21,7 +21,6 @@ import java.io.RandomAccessFile;
  */
 public class DataPuller {
     private DataCacher c;
-    private Data n;
     private int amountKeys;
     private RandomAccessFile keys;
     private RandomAccessFile values;
